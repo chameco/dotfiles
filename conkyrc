@@ -1,0 +1,13 @@
+out_to_x no
+out_to_console yes
+update_interval 2.0
+if_up_strictness address
+
+TEXT
+${execi 10 cmus-nowplaying}  \
+cpu=${cpu}% \
+mem=${memperc}% \
+net=${if_up wlan0}${wireless_link_qual_perc wlan0}%${else}${if_up eth0}on${else}no${endif}${endif} \
+bat=${if_existing /sys/class/power_supply/AC0/online 1}ac${else}${battery_percent}%${endif} \
+mail=${execi 120 imap_check} \
+${time %H:%M}

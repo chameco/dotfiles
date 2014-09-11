@@ -1,0 +1,9 @@
+include "/usr/share/themes/Numix/gtk-2.0/gtkrc"
+
+style "user-font" {
+	font_name = "Terminus 10"
+}
+
+widget_class "*" style "user-font"
+
+gtk-font-name="Terminus 10"

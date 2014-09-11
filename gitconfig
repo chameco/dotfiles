@@ -1,0 +1,7 @@
+[user]
+	email = samuel@chame.co
+	name = Samuel Breese
+[push]
+	default = matching
+[core]
+	excludesfile = /home/samuel/.gitignore_global
