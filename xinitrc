@@ -18,7 +18,7 @@ wmname LG3D
 conky | while read -r; do xsetroot -name "$REPLY"; done &
 
 #background
-feh --bg-center `burrito get wallpaper`
+feh --bg-fill `burrito get wallpaper`
 
 #redshift
 redshift -l 42.0683:-76.8216 -m vidmode &
@@ -28,6 +28,6 @@ redshift -l 42.0683:-76.8216 -m vidmode &
 [[ -f ~/.burrito/xresources ]] && xrdb -merge ~/.burrito/xresources
 
 #pulse
-start-pulseaudio-x11
+#start-pulseaudio-x11
 
 exec dwm
