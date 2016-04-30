@@ -6,4 +6,6 @@ style "user-font" {
 
 widget_class "*" style "user-font"
 
+gtk-theme-name="Numix"
+
 gtk-font-name="Terminus 10"

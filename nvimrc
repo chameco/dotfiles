@@ -1,32 +1,40 @@
 set nocompatible
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.config/nvim/plugged')
 
-Plugin 'gmarik/Vundle.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-classpath', { 'for' : 'clojure' }
+Plug 'guns/vim-clojure-static', { 'for' : 'clojure'}
+Plug 'tpope/vim-fireplace', { 'for' : 'clojure' }
+Plug 'kchmck/vim-coffee-script', { 'for' : 'coffee' }
+Plug 'jpalardy/vim-slime', { 'for' : ['lisp', 'haskell'] }
+Plug 'derekwyatt/vim-scala', { 'for' : 'scala' }
+Plug 'eagletmt/neco-ghc', { 'for' : 'haskell' }
+Plug 'tpope/vim-obsession'
+Plug 'lervag/vimtex'
 
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-classpath'
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'kovisoft/slimv'
-
-call vundle#end()
+call plug#end()
 
 set tags=/home/samuel/.vim/tags
 
-let g:paredit_mode = 0
-let g:SuperTabDefaultCompletionType = "context"
-let g:slimv_disable_clojure = 1
-
 let maplocalleader = ","
 
+let g:SuperTabDefaultCompletionType = "context"
+
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": ":1.1"}
+let g:slime_dont_ask_default = 1
+
 let g:syntastic_mode_map = { "mode": "active", "active_filetypes": [], "passive_filetypes": ["scala", "asm"] }
-let g:syntastic_check_on_open=1 
-let g:syntastic_always_populate_loc_list=1
+let g:syntastic_check_on_open = 1 
+let g:syntastic_always_populate_loc_list = 1
+
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
+let g:ycm_global_ycm_extra_conf = '~/dotfiles/ycm_extra_conf.py'
+
+let g:tex_flavor = 'latex'
 
 autocmd CursorMovedI *  if pumvisible() == 0|silent! pclose|endif "Automatically close omnicomplete scratch preview
 autocmd InsertLeave * if pumvisible() == 0|silent! pclose|endif
@@ -103,6 +111,9 @@ set novisualbell
 set t_vb=
 set tm=500
 
+" Disable mouse support
+set mouse=
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -151,16 +162,20 @@ autocmd FileType vim setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Lisp
-autocmd BufRead,BufNewFile lisp,asd,scm setfiletype lisp
+autocmd BufRead,BufNewFile lisp,asd setfiletype lisp
 autocmd Filetype lisp setlocal lisp expandtab shiftwidth=2 tabstop=8 softtabstop=2
-autocmd Filetype lisp let b:SuperTabContextDefaultCompletionType="<C-X><C-O>"
+
+" Scheme
+autocmd BufRead,BufNewFile scm setfiletype scheme
+autocmd Filetype scheme setlocal lisp expandtab shiftwidth=2 tabstop=8 softtabstop=2
+autocmd Filetype scheme setlocal lispwords+=let-values,condition-case,with-input-from-string,with-output-to-string,handle-exceptions,call/cc,rec,receive,call-with-output-file
 
 " Ruby
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 
 " Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
 " Perl
 autocmd FileType perl setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -180,6 +195,7 @@ autocmd FileType ash setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 " Haskell
 autocmd BufRead,BufNewFile hs setfiletype haskell
 autocmd Filetype haskell setlocal tabstop=8 expandtab softtabstop=4 shiftwidth=4 smarttab shiftround nojoinspaces
+autocmd Filetype haskell setlocal omnifunc=necoghc#omnifunc
 
 " Java
 autocmd FileType java setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
@@ -199,6 +215,9 @@ autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4
 " LESS
 autocmd FileType less setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
+" SASS
+autocmd FileType sass setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
+
 " JavaScript
 autocmd BufRead,BufNewFile json setfiletype javascript
 autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 cinoptions=J2
@@ -206,7 +225,6 @@ let javascript_enable_domhtmlcss=1
 
 " CoffeeScript
 autocmd FileType coffee setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
-
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -227,10 +245,10 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
 
 nnoremap <S-h> gT
 nnoremap <S-l> gt

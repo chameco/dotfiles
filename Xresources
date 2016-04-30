@@ -1,5 +1,5 @@
 URxvt*loginShell:true
-URxvt*scrollBar:true
+URxvt*scrollBar:false
 URxvt*scrollBar_right:true
 URxvt*scrollBar_floating:false
 URxvt*scrollstyle:plain
@@ -12,11 +12,13 @@ URxvt*scrollColor:#222222
 URxvt.font: -*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
 
 URxvt*urgentOnBell: true
+URxvt.perl-ext-common: default,clipboard
+URxvt.iso14755: False
+URxvt.keysym.Alt-C: perl:clipboard:copy
+URxvt.keysym.Alt-V: perl:clipboard:paste
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
 
-URxvt.perl-ext-common: clipboard
-URxvt.keysym.M-c:   perl:clipboard:copy
-URxvt.keysym.M-v:   perl:clipboard:paste
-URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
 
 *cursorColor:           #93a1a1
 *pointerColorBackground:#586e75

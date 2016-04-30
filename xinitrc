@@ -15,7 +15,8 @@ urxvtd -q -o -f &
 wmname LG3D
 
 #set statusbar
-conky | while read -r; do xsetroot -name "$REPLY"; done &
+xsetroot -name "`sensei statusbar`"
+while sleep 10; do xsetroot -name "`sensei statusbar`"; done &
 
 #background
 feh --bg-fill `burrito get wallpaper`
@@ -28,6 +29,6 @@ redshift -l 42.0683:-76.8216 -m vidmode &
 [[ -f ~/.burrito/xresources ]] && xrdb -merge ~/.burrito/xresources
 
 #pulse
-#start-pulseaudio-x11
+start-pulseaudio-x11
 
 exec dwm
