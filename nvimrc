@@ -2,18 +2,33 @@ set nocompatible
 
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'Valloric/YouCompleteMe'
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'Shougo/vimproc.vim'
+Plug 'zchee/deoplete-jedi'
+
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-obsession'
+Plug 'Konfekt/FastFold'
+
+Plug 'lervag/vimtex'
+
 Plug 'tpope/vim-classpath', { 'for' : 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for' : 'clojure'}
 Plug 'tpope/vim-fireplace', { 'for' : 'clojure' }
-Plug 'kchmck/vim-coffee-script', { 'for' : 'coffee' }
-Plug 'jpalardy/vim-slime', { 'for' : ['lisp', 'haskell'] }
+
 Plug 'derekwyatt/vim-scala', { 'for' : 'scala' }
+
+Plug 'kchmck/vim-coffee-script', { 'for' : 'coffee' }
+
+Plug 'jpalardy/vim-slime', { 'for' : ['lisp', 'haskell'] }
 Plug 'eagletmt/neco-ghc', { 'for' : 'haskell' }
-Plug 'tpope/vim-obsession'
-Plug 'lervag/vimtex'
+Plug 'eagletmt/ghcmod-vim', { 'for' : 'haskell' }
+Plug 'dag/vim2hs', { 'for' : 'haskell' }
 
 call plug#end()
 
@@ -21,7 +36,13 @@ set tags=/home/samuel/.vim/tags
 
 let maplocalleader = ","
 
-let g:SuperTabDefaultCompletionType = "context"
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources = {'haskell' : ['ghc']}
+
+map T :NERDTreeToggle<CR>
+let NERDTreeMapOpenInTabSilent = ''
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '~'
 
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": ":1.1"}
@@ -30,14 +51,18 @@ let g:slime_dont_ask_default = 1
 let g:syntastic_mode_map = { "mode": "active", "active_filetypes": [], "passive_filetypes": ["scala", "asm"] }
 let g:syntastic_check_on_open = 1 
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_haskell_checkers=['ghc_mod', 'hlint']
 
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
-let g:ycm_global_ycm_extra_conf = '~/dotfiles/ycm_extra_conf.py'
+let g:haskell_conceal_wide = 1
 
-let g:tex_flavor = 'latex'
+inoremap <silent><expr> <Tab>
+\ pumvisible() ? "\<C-n>" :
+\ deoplete#mappings#manual_complete()
 
 autocmd CursorMovedI *  if pumvisible() == 0|silent! pclose|endif "Automatically close omnicomplete scratch preview
 autocmd InsertLeave * if pumvisible() == 0|silent! pclose|endif
+
+let g:tex_flavor = 'latex'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -45,6 +70,8 @@ autocmd InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
 set ssop-=options " do not store global and local values in a session
 set ssop-=folds " do not store folds
+
+set foldcolumn=1
 
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -150,16 +177,15 @@ set noswapfile
 
 set smarttab
 set autoindent
-set cindent
 set nowrap
 
 "------ Filetypes ------"
 
 " Vimscript
-autocmd FileType vim setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
+autocmd FileType vim setlocal cindent expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Shell
-autocmd FileType sh setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
+autocmd FileType sh setlocal cindent expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Lisp
 autocmd BufRead,BufNewFile lisp,asd setfiletype lisp
@@ -167,38 +193,40 @@ autocmd Filetype lisp setlocal lisp expandtab shiftwidth=2 tabstop=8 softtabstop
 
 " Scheme
 autocmd BufRead,BufNewFile scm setfiletype scheme
-autocmd Filetype scheme setlocal lisp expandtab shiftwidth=2 tabstop=8 softtabstop=2
-autocmd Filetype scheme setlocal lispwords+=let-values,condition-case,with-input-from-string,with-output-to-string,handle-exceptions,call/cc,rec,receive,call-with-output-file
+autocmd Filetype scheme setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=8
+autocmd FileType scheme let b:is_chicken=1
 
 " Ruby
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
 
 " Python
 autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
 " Perl
 autocmd FileType perl setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " C
 autocmd FileType c,h setfiletype c
-autocmd FileType c,h setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType c,h setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " C++
 autocmd FileType cpp,hpp setfiletype cpp
-autocmd FileType cpp,hpp setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType cpp,hpp setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " ASH
 autocmd BufRead,BufNewFile ash setfiletype ash
-autocmd FileType ash setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType ash setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Haskell
 autocmd BufRead,BufNewFile hs setfiletype haskell
 autocmd Filetype haskell setlocal tabstop=8 expandtab softtabstop=4 shiftwidth=4 smarttab shiftround nojoinspaces
-autocmd Filetype haskell setlocal omnifunc=necoghc#omnifunc
+
+" Cabal
+autocmd BufRead,BufNewFile hs setfiletype cabal
+autocmd FileType cabal setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Java
-autocmd FileType java setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType java setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Scala
 autocmd FileType scala setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2

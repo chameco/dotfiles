@@ -1,0 +1,15 @@
+set smtp_url="smtps://samuel@chame.co/"
+set from="samuel@chame.co"
+set realname="samuel"
+
+set imap_user=samuel
+set spoolfile="imaps://samuel@chame.co/"
+set folder="imaps://chame.co/"
+
+set header_cache = ~/.cache/mutt
+set message_cachedir = "~/.cache/mutt"
+
+set ssl_force_tls=yes
+unset imap_passive
+
+source ~/.mutt/colors

@@ -9,16 +9,10 @@ URxvt*saveLines:32767
 URxvt*troughColor:#000000
 URxvt*scrollColor:#222222
 
-URxvt.font: -*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
+URxvt.font: xft:Terminus:pixelsize=14:antialias=false
 
 URxvt*urgentOnBell: true
-URxvt.perl-ext-common: default,clipboard
-URxvt.iso14755: False
-URxvt.keysym.Alt-C: perl:clipboard:copy
-URxvt.keysym.Alt-V: perl:clipboard:paste
-URxvt.clipboard.copycmd:  xsel -ib
-URxvt.clipboard.pastecmd: xsel -ob
-
+URxvt.iso14755: false
 
 *cursorColor:           #93a1a1
 *pointerColorBackground:#586e75
