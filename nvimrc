@@ -226,7 +226,7 @@ autocmd BufRead,BufNewFile hs setfiletype cabal
 autocmd FileType cabal setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Java
-autocmd FileType java setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType java setlocal cindent expandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 " Scala
 autocmd FileType scala setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
