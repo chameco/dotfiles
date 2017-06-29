@@ -2,11 +2,8 @@ set nocompatible
 
 call plug#begin('~/.config/nvim/plugged')
 
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'Shougo/vimproc.vim'
 Plug 'zchee/deoplete-jedi'
 
@@ -21,20 +18,21 @@ Plug 'tpope/vim-classpath', { 'for' : 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for' : 'clojure'}
 Plug 'tpope/vim-fireplace', { 'for' : 'clojure' }
 
-Plug 'derekwyatt/vim-scala', { 'for' : 'scala' }
-
-Plug 'kchmck/vim-coffee-script', { 'for' : 'coffee' }
-
 Plug 'jpalardy/vim-slime', { 'for' : ['lisp', 'haskell'] }
 Plug 'eagletmt/neco-ghc', { 'for' : 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for' : 'haskell' }
 Plug 'dag/vim2hs', { 'for' : 'haskell' }
+
+Plug 'chameco/tweaks'
 
 call plug#end()
 
 set tags=/home/samuel/.vim/tags
 
 let maplocalleader = ","
+
+let g:python_host_prog = '/usr/bin/python2.7'
+let g:python3_host_prog = '/usr/bin/python3.4'
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources = {'haskell' : ['ghc']}
@@ -51,7 +49,11 @@ let g:slime_dont_ask_default = 1
 let g:syntastic_mode_map = { "mode": "active", "active_filetypes": [], "passive_filetypes": ["scala", "asm"] }
 let g:syntastic_check_on_open = 1 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_haskell_checkers=['ghc_mod', 'hlint']
+let g:syntastic_haskell_checkers = ['ghc_mod', 'hlint']
+let g:syntastic_go_checkers = ['go', 'gofmt', 'govet']
+let g:syntastic_java_javac_config_file_enabled = 1
+
+let g:ghcmod_ghc_options = ['-Wall']
 
 let g:haskell_conceal_wide = 1
 
@@ -222,7 +224,7 @@ autocmd BufRead,BufNewFile hs setfiletype haskell
 autocmd Filetype haskell setlocal tabstop=8 expandtab softtabstop=4 shiftwidth=4 smarttab shiftround nojoinspaces
 
 " Cabal
-autocmd BufRead,BufNewFile hs setfiletype cabal
+autocmd BufRead,BufNewFile cabal setfiletype cabal
 autocmd FileType cabal setlocal expandtab shiftwidth=4 tabstop=8 softtabstop=4
 
 " Java
@@ -251,8 +253,9 @@ autocmd BufRead,BufNewFile json setfiletype javascript
 autocmd FileType javascript setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 cinoptions=J2
 let javascript_enable_domhtmlcss=1
 
-" CoffeeScript
-autocmd FileType coffee setlocal expandtab shiftwidth=2 tabstop=8 softtabstop=2
+" Go
+autocmd BufRead,BufNewFile go setfiletype go
+autocmd FileType go setlocal cindent noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 """"""""""""""""""""""""""""""
 " => Visual mode related

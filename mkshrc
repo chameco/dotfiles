@@ -1,0 +1,12 @@
+PS1='${USER:=$(id -un)}'"@${HOSTNAME:=$(hostname)}:\$PWD "
+
+set -o vi
+set -o vi-tabcomplete
+
+alias vim=nvim
+alias ls="ls --color"
+alias grep="grep --color"
+alias rm="rm -i"
+alias mv="mv -i"
+alias torrent="aria2c --seed-time=0 --max-upload-limit=1"
+alias mpv="mpv -vo=drm"

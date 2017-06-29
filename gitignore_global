@@ -5,6 +5,11 @@
 # Session File #
 ################
 session.vim
+Session.vim
+
+# Stack Files #
+###############
+.stack-work/*
 
 # Compiled source #
 ###################
@@ -33,7 +38,7 @@ session.vim
 *.tbz2
 *.tgz
 *.xz
-*.zip
+#*.zip
 *.Z
 
 # Logs and databases #

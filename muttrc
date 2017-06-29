@@ -1,15 +1,9 @@
-set smtp_url="smtps://samuel@chame.co/"
-set from="samuel@chame.co"
-set realname="samuel"
-
-set imap_user=samuel
-set spoolfile="imaps://samuel@chame.co/"
-set folder="imaps://chame.co/"
-
-set header_cache = ~/.cache/mutt
-set message_cachedir = "~/.cache/mutt"
-
-set ssl_force_tls=yes
-unset imap_passive
-
 source ~/.mutt/colors
+
+macro index <f2> '<change-folder>imaps://chame.co<enter>'
+macro index <f3> '<change-folder>imaps://mail.rpi.edu<enter>'
+
+folder-hook 'chame.co' 'source ~/.mutt/account.personal'
+folder-hook 'mail.rpi.edu' 'source ~/.mutt/account.school'
+# switch to default account on startup
+source ~/.mutt/account.personal
