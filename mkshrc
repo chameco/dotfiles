@@ -10,3 +10,7 @@ alias rm="rm -i"
 alias mv="mv -i"
 alias torrent="aria2c --seed-time=0 --max-upload-limit=1"
 alias mpv="mpv -vo=drm"
+alias mp="mpv --no-video"
+alias i=imgview
+alias yt=youtube-dl
+alias sudo=doas
